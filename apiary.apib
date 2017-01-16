@@ -264,7 +264,7 @@ curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Aut
             "teamName": "Designers"
         }
         
-## High 5s [/high5/{receiverId}]        
+## High 5s [/high5/]        
 
 ### Create a new High 5 [POST]
 Creates a new High 5 for the receiver. An optional description can be send explaining the reason why the High 5 was awarded.
@@ -277,10 +277,7 @@ If the authenticated user has employee permissions, only the sender profile will
 
 Example (Manager):
 
-curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Auth-Token: _p0LOth3HW8A77lpxvRdLAxZK16_t1TZZT3hkOJvdJz" -H "X-User-d: HpzTxbG42fAqAMRhK" "https://happymoodscore.com/api/v2/high5/gaEATkQ8PBuemBCiv" -d '{"senderId": "vFZ5mrecWazrJeBW3", "description": "Thanks for your help mate!!"}'
-
-+ Parameters
-    + receiverId (string) - Id of the employee that is receiving the High 5.
+curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Auth-Token: _p0LOth3HW8A77lpxvRdLAxZK16_t1TZZT3hkOJvdJz" -H "X-User-d: HpzTxbG42fAqAMRhK" "https://happymoodscore.com/api/v2/high5/" -d '{"receiverId": "gaEATkQ8PBuemBCiv", "senderId": "vFZ5mrecWazrJeBW3", "description": "Thanks for your help mate!!"}'
 
 + Request (application/json)
     + Headers
@@ -291,6 +288,7 @@ curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Aut
     + Body
     
             {
+                receiverId (string) - Id of the employee that will receive the High 5.
                 senderId (string, optional) - Id of the employee that is giving the High 5. It will default to the authenticated user.
                 description (string, optional) - Optional comment.
             }

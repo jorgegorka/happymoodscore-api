@@ -1,6 +1,6 @@
 # Happy Mood Score
 
-This document references Happy Mood Score version 2 of the API.
+This document references version 2 of the API.  http://docs.happymoodscore.apiary.io/
 
 Happy Mood Score is an employee feedback and engagement tool. To know more visit https://www.happymoodscore.com
 

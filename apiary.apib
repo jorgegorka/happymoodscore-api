@@ -1,11 +1,13 @@
 FORMAT: 1A
-HOST: https://happymoodscore.com/api/v1/
+HOST: https://happymoodscore.com/api/v2/
 
 # Happy Mood Score
 
-This document references Happy Mood Score version 1 of the API.
-With version 1 you can obtain the key metrics for each one of your employees and assign Hi 5s to them. 
+This document references Happy Mood Score version 2 of the API.
 
+Happy Mood Score is an employee feedback and engagement tool. To know more visit https://www.happymoodscore.com
+
+If you are looking for the deprecated v1 documentation you can find it here: http://docs.happymoodscorev1.apiary.io/#reference
 
 
 ## Authentication [/login]
@@ -20,7 +22,7 @@ You will need to save these credentials and use them in your requests.
 
 Example: 
 
-curl -H 'Accept: application/json' -H 'Content-type: application/json' "https://happymoodscore.com/api/v1/login" -X POST -d '{"email": "manager@company.com", "password": "123456"}'
+curl -H 'Accept: application/json' -H 'Content-type: application/json' "https://happymoodscore.com/api/v2/login" -X POST -d '{"email": "manager@company.com", "password": "123456"}'
 
 + Request (application/json)
 
@@ -48,7 +50,7 @@ use the API again.
 
 Example:
 
-curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Auth-Token: _p0LOth3HW8A77lpxvRdLAxZK16_t1TZZT3hkOJvdJz" -H "X-User-Id: HpzTxbG42fAqAMRhK" "https://happymoodscore.com/api/v1/logout"
+curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Auth-Token: _p0LOth3HW8A77lpxvRdLAxZK16_t1TZZT3hkOJvdJz" -H "X-User-Id: HpzTxbG42fAqAMRhK" "https://happymoodscore.com/api/v2/logout"
 
 + Request (application/json)
     + Headers
@@ -65,10 +67,99 @@ curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Aut
             }
         }
 
-## Employees collection [/employees]
+## Teams [/teams]
+
+### List all teams [GET]
+Returns all teams.
+
+Only users with admin or manager permissions will get a list of teams. 
+
+Example:
+
+curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Auth-Token: _p0LOth3HW8A77lpxvRdLAxZK16_t1TZZT3hkOJvdJz" -H "X-User-Id: HpzTxbG42fAqAMRhK" "https://happymoodscore.com/api/v2/teams"
+
++ Request (application/json)
+    + Headers
+    
+            X-Auth-Token: "_p0LOth3HW8A77lpxvRdLAxZK16_t1TZZT3hkOJvdJz"
+            X-User-Id: "HpzTxbG42fAqAMRhK"
+
++ Response 200 (application/json)
+
+        [
+            {
+                "id": "gaEATkQ8PBuemBCiv",
+                "name": "Developers",
+                "totalEmployees": 0,
+                "hms": "0",
+                "involvement": "0"
+            }
+        ]
+        
+### Add a new team [POST]
+Add a new team.
+
+Example:
+
+curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Auth-Token: _p0LOth3HW8A77lpxvRdLAxZK16_t1TZZT3hkOJvdJz" -H "X-User-Id: HpzTxbG42fAqAMRhK" "https://happymoodscore.com/api/v2/teams"  -X POST -d '{"name": "Developers"}'
+
++ Request (application/json)
+    + Headers
+    
+            X-Auth-Token: "_p0LOth3HW8A77lpxvRdLAxZK16_t1TZZT3hkOJvdJz"
+            X-User-Id: "HpzTxbG42fAqAMRhK"
+            
+    + Body
+    
+            {
+                name (string) - The name of the new team.
+            }
+
++ Response 200 (application/json)
+
+        {
+            "id": "gaEATkQ8PBuemBCiv",
+            "name": "Developers",
+            "totalEmployees": 0,
+            "hms": "0",
+            "involvement": "0"
+        }
+
+## Team [/team/{teamId}]
+
+### Display a team [GET]
+Returns information for the selected team.
+
+Only users with admin or manager permissions can have access to any team. Standard users will only get information from their own team.
+
+Example:
+
+curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Auth-Token: _p0LOth3HW8A77lpxvRdLAxZK16_t1TZZT3hkOJvdJz" -H "X-User-Id: HpzTxbG42fAqAMRhK" "https://happymoodscore.com/api/v2/teams/gaEATkQ8PBuemBCiv"
+
++ Parameters
+    + teamId (string) - Id of the team.
+
++ Request (application/json)
+    + Headers
+    
+            X-Auth-Token: "_p0LOth3HW8A77lpxvRdLAxZK16_t1TZZT3hkOJvdJz"
+            X-User-Id: "HpzTxbG42fAqAMRhK"
+
++ Response 200 (application/json)
+
+        {
+            "id": "gaEATkQ8PBuemBCiv",
+            "name": "Developers",
+            "totalEmployees": "0",
+            "hms": "0",
+            "involvement": "0"
+        }
+
+        
+## Employees [/employees]
 
 ### List all employees [GET]
-Returns all active employees. For every employee you will get: HMS This number reflects the Happy Mood Score of the employee.
+Returns all employees. For every employee you will get: HMS This number reflects the Happy Mood Score of the employee.
 It is a number that ranges from -10 to +10, Involvement: % of involvment, Points: Total number of points obtained by the employee,
 hi5: Total number of Hi 5s received.
 
@@ -77,7 +168,7 @@ A standard user will only get its own information.
 
 Example:
 
-curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Auth-Token: _p0LOth3HW8A77lpxvRdLAxZK16_t1TZZT3hkOJvdJz" -H "X-User-Id: HpzTxbG42fAqAMRhK" "https://happymoodscore.com/api/v1/employees"
+curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Auth-Token: _p0LOth3HW8A77lpxvRdLAxZK16_t1TZZT3hkOJvdJz" -H "X-User-Id: HpzTxbG42fAqAMRhK" "https://happymoodscore.com/api/v2/employees"
 
 + Request (application/json)
     + Headers
@@ -95,15 +186,88 @@ curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Aut
                 "hms": "5",
                 "involvement": "23.98",
                 "points": "2300",
-                "hi5": "23"
+                "hi5": "23",
+                "stataus": "Active",
+                "teamId": "faEATkQ8PBuemBCee",
+                "teamName": "Designers"
             }
         ]
         
-## Assign a Hi 5 [/employees/{receiverId}/{?senderId}/{?description}]        
+### Add a new employee [POST]
+Add a new employee to the selected team. The status of the new employee will be active.
 
-### Create a new Hi 5 [POST]
-Creates a new Hi 5 for the receiver. An optional description 
-can be send explaining the reasons why the Hi 5 was awarded.
+Example:
+
+curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Auth-Token: _p0LOth3HW8A77lpxvRdLAxZK16_t1TZZT3hkOJvdJz" -H "X-User-Id: HpzTxbG42fAqAMRhK" "https://happymoodscore.com/api/v2/employees"  -X POST -d '{"name": "Black Jack", "email": "black.jack@company.com", "teamId": "p5vpa4pfTCcthc8xu"}'
+
++ Request (application/json)
+    + Headers
+    
+            X-Auth-Token: "_p0LOth3HW8A77lpxvRdLAxZK16_t1TZZT3hkOJvdJz"
+            X-User-Id: "HpzTxbG42fAqAMRhK"
+            
+    + Body
+    
+            {
+                name (string) - The name of the new employee.
+                email (string) - The email of the new employee. Employee will receive an email to validate the account and add a password.
+                teamId (string) - ID of the team where the new employee will be added.
+            }
+
++ Response 200 (application/json)
+
+        {
+            "id": "gaEATkQ8PBuemBCiv",
+            "name": "Black Jack",
+            "email": "black.jack@company.com",
+            "hms": "0",
+            "involvement": "0",
+            "points": "0",
+            "hi5": "0",
+            "stataus": "Active",
+            "teamId": "faEATkQ8PBuemBCee",
+            "teamName": "Designers"
+        }
+
+## Employee [/employees/{employeeId}]
+
+### Display an employee [GET]
+Returns information for the selected employee.
+
+Only users with admin or manager permissions can have access to any employee. Standard users will only get their own information.
+
+Example:
+
+curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Auth-Token: _p0LOth3HW8A77lpxvRdLAxZK16_t1TZZT3hkOJvdJz" -H "X-User-Id: HpzTxbG42fAqAMRhK" "https://happymoodscore.com/api/v2/employees/gaEATkQ8PBuemBCiv"
+
++ Parameters
+    + employeeId (string) - Id of the team.
+
++ Request (application/json)
+    + Headers
+    
+            X-Auth-Token: "_p0LOth3HW8A77lpxvRdLAxZK16_t1TZZT3hkOJvdJz"
+            X-User-Id: "HpzTxbG42fAqAMRhK"
+
++ Response 200 (application/json)
+
+        {
+            "id": "gaEATkQ8PBuemBCiv",
+            "name": "Claire Beauchamp",
+            "email": "employee@company.com",
+            "hms": "5",
+            "involvement": "23.98",
+            "points": "2300",
+            "hi5": "23",
+            "stataus": "Active",
+            "teamId": "faEATkQ8PBuemBCee",
+            "teamName": "Designers"
+        }
+        
+## High 5s [/high5/{receiverId}]        
+
+### Create a new High 5 [POST]
+Creates a new High 5 for the receiver. An optional description can be send explaining the reason why the High 5 was awarded.
 
 An authenticated user with admin or manager permissions must send the sender employee ID and the receiver employee ID.  
 If the authenticated user has employee permission senderId will be ignored (can be left blank) and the authenticated user will be set as the sender.
@@ -113,18 +277,23 @@ If the authenticated user has employee permissions, only the sender profile will
 
 Example (Manager):
 
-curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Auth-Token: _p0LOth3HW8A77lpxvRdLAxZK16_t1TZZT3hkOJvdJz" -H "X-User-d: HpzTxbG42fAqAMRhK" "https://happymoodscore.com/api/v1/employees/gaEATkQ8PBuemBCiv?senderId=vFZ5mrecWazrJeBW3" -d '{"description": "The project succeeded thanks to you!!"}'
+curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Auth-Token: _p0LOth3HW8A77lpxvRdLAxZK16_t1TZZT3hkOJvdJz" -H "X-User-d: HpzTxbG42fAqAMRhK" "https://happymoodscore.com/api/v2/high5/gaEATkQ8PBuemBCiv" -d '{"senderId": "vFZ5mrecWazrJeBW3", "description": "Thanks for your help mate!!"}'
 
 + Parameters
-    + receiverId (string) - Id of the employee that is receiving the Hi 5.
-    + senderId (string, optional) - Id of the employee that is giving the Hi 5.
-    + description (string, optional) - Optional comment sent in the body of the request.
+    + receiverId (string) - Id of the employee that is receiving the High 5.
 
 + Request (application/json)
     + Headers
     
             X-Auth-Token: "_p0LOth3HW8A77lpxvRdLAxZK16_t1TZZT3hkOJvdJz"
             X-User-Id: "HpzTxbG42fAqAMRhK"
+            
+    + Body
+    
+            {
+                senderId (string, optional) - Id of the employee that is giving the High 5. It will default to the authenticated user.
+                description (string, optional) - Optional comment.
+            }
 
 + Response 201 (application/json)
 
@@ -136,7 +305,10 @@ curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Aut
                 "hms": "5",
                 "involvement": "23.98",
                 "points": "2300",
-                "hi5": "23"
+                "hi5": "23",
+                "stataus": "Active",
+                "teamId": "faEATkQ8PBuemBCee",
+                "teamName": "Designers"
             },
             receiver: {
                 "id": "vFZ5mrecWazrJeBW3",
@@ -145,7 +317,10 @@ curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Aut
                 "hms": "-3",
                 "involvement": "76",
                 "points": "340",
-                "hi5": "9"
+                "hi5": "9",
+                "stataus": "Active",
+                "teamId": "faEATkQ8PBuemBCee",
+                "teamName": "Designers"
             }
         ]
         
@@ -159,17 +334,19 @@ curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Aut
         }
         
         
-## Dashboard [/dashboard/{?employeeId}/{?startDate}/{?endDate}]
+## Dashboard [/dashboard/]
 
 ### Get detailed metrics [GET]
-Returns detailed metrics for the company or for a specific employee if an employee ID
-is set in the params. 
 
-If no start and end dates are provided then it will return values for the last 3 months.
+Returns detailed metrics for the company, team or employee.
+
+If no resource is provided it will return metrics about the company.
+
+If no start and end dates are provided then it will return metrics for the last 3 months.
 
 #### Returned fields
 
-resultsBad: Number of votes for the "worst than expected" option.
+resultsBad: Number of votes for the "Worst than expected" option.
 
 resultsGood: Number of votes for the "Better than expected" option.
 
@@ -179,7 +356,7 @@ totalVotes:  Number of valid votes received.
 
 totalCount: Number of votes generated.
 
-totalPending: Number of votes that where not "answered".
+totalPending: Number of votes without a result (employee has not voted).
 
 involvement: % of involvement of the team/employee.
 
@@ -189,27 +366,39 @@ companyName: Name of the company.
 
 Example:
 
-curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Auth-Token: _p0LOth3HW8A77lpxvRdLAxZK16_t1TZZT3hkOJvdJz" -H "X-User-d: HpzTxbG42fAqAMRhK" "https://happymoodscore.com/api/v1/dashboard?employeeId=vFZ5mrecWazrJeBW3&startDate=2017-01-01"
-
-+ Parameters
-    + employeeId (string, optional) - Id of an employee.
-    + startDate (string, optional) - Format YYYY-MM-DD.
-    + endDate (string, optional) - Format YYYY-MM-DD.
+curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Auth-Token: _p0LOth3HW8A77lpxvRdLAxZK16_t1TZZT3hkOJvdJz" -H "X-User-d: HpzTxbG42fAqAMRhK" "https://happymoodscore.com/api/v2/dashboard -X GET -d '{"resourceType": "employee", "resourceId": "vFZ5mrecWazrJeBW3", "startDate": "2016-03-01", "sendDate": "2016-03-31"}'
+    
++ Request (application/json)
+    + Headers
+    
+            X-Auth-Token: "_p0LOth3HW8A77lpxvRdLAxZK16_t1TZZT3hkOJvdJz"
+            X-User-Id: "HpzTxbG42fAqAMRhK"
+            
+            
+    + Body
+    
+            resourceType (string, optional) - It should be "team" or "employee".
+            resourceId (string, optional) - The ID of the resource.
+            startDate (string, optional) - Format YYYY-MM-DD.
+            endDate (string, optional) - Format YYYY-MM-DD.
+            
     
 + Response 201 (application/json)
 
         {
-            data: {
-                    "resultsBad": 1,
-                    "resultsGood": 8,
-                    "resultsFine": 30,
-                    "totalVotes": 39,
-                    "totalCount": 65,
-                    "totalPending": 26,
-                    "involvement": 60,
-                    "totalHms": "6",
-                    "companyName": "Highlands Company"
-            }
+            "resultsBad": 1,
+            "resultsGood": 8,
+            "resultsFine": 30,
+            "totalVotes": 39,
+            "totalCount": 65,
+            "totalPending": 26,
+            "involvement": 60,
+            "totalHms": "6",
+            "companyName": "Highlands Company",
+            "teamId": "faEATkQ8PBuemBCee",
+            "teamName": "Designers"
+            "employeeId": "vFZ5mrecWazrJeBW3",
+            "employeeName": "James Fraser"
         }
         
 + Response 400 (application/json)

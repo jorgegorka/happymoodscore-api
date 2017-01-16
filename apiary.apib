@@ -264,7 +264,50 @@ curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Aut
             "teamName": "Designers"
         }
         
-## High 5s [/high5/]        
+## High 5s [/high5/] 
+
+### List all high 5s [GET]
+Returns all for the specified employees.  You can filter by sender and or receiver.
+
+Only users with admin or manager permissions will get a list of all feedback. Standard users can not access this endpoint.
+
+Example:
+
+curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Auth-Token: _p0LOth3HW8A77lpxvRdLAxZK16_t1TZZT3hkOJvdJz" -H "X-User-Id: HpzTxbG42fAqAMRhK" "https://happymoodscore.com/api/v2/high5" -X GET -d '{"senderId": "gaEATkQ8PBuemBCiv", "recevierId": "vFZ5mrecWazrJeBW3", "startDate": "2016-03-01", "sendDate": "2016-03-31"}'
+
++ Request (application/json)
+    + Headers
+    
+            X-Auth-Token: "_p0LOth3HW8A77lpxvRdLAxZK16_t1TZZT3hkOJvdJz"
+            X-User-Id: "HpzTxbG42fAqAMRhK"
+            
+    + Body
+    
+            {
+                receiverId (string, optional) - Id of the employee that received the High 5.
+                employeeId (string, optional) - Id of the employee that sent the High 5.
+                startDate (string, optional) - Format YYYY-MM-DD.
+                endDate (string, optional) - Format YYYY-MM-DD.
+            }
+
++ Response 200 (application/json)
+
+        [
+            {
+                "id": "yve9tCC7hB2r4w7Xw",
+                "createdAt": "2016-05-12T08:30:02.047Z",
+                "isNew": false,
+                "employeeId": "gaEATkQ8PBuemBCiv",
+                "employeeName": "Claire Beauchamp",
+                "teamId": "nWW3LtZcCmdBrTfMh",
+                "result": "As expected",
+                "message": "Project is going ok. We are on schedule",
+                "replyEmployeeId": "gaEATkQ8PBuemBCiv",
+                "replyEmployeeName": "Black Jack",
+                "replyMessasge": "Thanks Claire. Ping me if you have any problems.",
+                "replyCreatedAt": "2016-05-15T23:17:45.420Z"
+            }
+        ]
 
 ### Create a new High 5 [POST]
 Creates a new High 5 for the receiver. An optional description can be send explaining the reason why the High 5 was awarded.
@@ -330,7 +373,51 @@ curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Aut
               'Error 2 description'
             ]
         }
-        
+
+## Feedback [/feedback]
+
+### List all feedback [GET]
+Returns all feedback for specified team or employee or all if none specified. It will also include the reply if the team manager has replied to the feedback.
+
+Only users with admin or manager permissions will get a list of all feedback. Standard users will only get their own.
+
+Example:
+
+curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Auth-Token: _p0LOth3HW8A77lpxvRdLAxZK16_t1TZZT3hkOJvdJz" -H "X-User-Id: HpzTxbG42fAqAMRhK" "https://happymoodscore.com/api/v2/feedback" -X GET -d '{"teamId": "faEATkQ8PBuemBCee", "employeeId": "vFZ5mrecWazrJeBW3", "startDate": "2016-03-01", "sendDate": "2016-03-31"}'
+
++ Request (application/json)
+    + Headers
+    
+            X-Auth-Token: "_p0LOth3HW8A77lpxvRdLAxZK16_t1TZZT3hkOJvdJz"
+            X-User-Id: "HpzTxbG42fAqAMRhK"
+            
+    + Body
+    
+            {
+                teamId (string, optional) - Id of a team.
+                employeeId (string, optional) - Id of an employee.
+                startDate (string, optional) - Format YYYY-MM-DD.
+                endDate (string, optional) - Format YYYY-MM-DD.
+            }
+
++ Response 200 (application/json)
+
+        [
+            {
+                "id": "yve9tCC7hB2r4w7Xw",
+                "createdAt": "2016-05-12T08:30:02.047Z",
+                "isNew": false,
+                "employeeId": "gaEATkQ8PBuemBCiv",
+                "employeeName": "Claire Beauchamp",
+                "teamId": "nWW3LtZcCmdBrTfMh",
+                "result": "As expected",
+                "message": "Project is going ok. We are on schedule",
+                "replyEmployeeId": "gaEATkQ8PBuemBCiv",
+                "replyEmployeeName": "Black Jack",
+                "replyMessasge": "Thanks Claire. Ping me if you have any problems.",
+                "replyCreatedAt": "2016-05-15T23:17:45.420Z"
+            }
+        ]        
         
 ## Dashboard [/dashboard/]
 

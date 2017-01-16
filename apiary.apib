@@ -267,7 +267,7 @@ curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Aut
 ## High 5s [/high5/] 
 
 ### List all high 5s [GET]
-Returns all for the specified employees.  You can filter by sender and or receiver.
+Returns all High 5s for the specified employees. You can filter by sender and or receiver.
 
 Only users with admin or manager permissions will get a list of all feedback. Standard users can not access this endpoint.
 
@@ -285,7 +285,7 @@ curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Aut
     
             {
                 receiverId (string, optional) - Id of the employee that received the High 5.
-                employeeId (string, optional) - Id of the employee that sent the High 5.
+                senderId (string, optional) - Id of the employee that sent the High 5.
                 startDate (string, optional) - Format YYYY-MM-DD.
                 endDate (string, optional) - Format YYYY-MM-DD.
             }
@@ -294,18 +294,13 @@ curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Aut
 
         [
             {
-                "id": "yve9tCC7hB2r4w7Xw",
-                "createdAt": "2016-05-12T08:30:02.047Z",
-                "isNew": false,
-                "employeeId": "gaEATkQ8PBuemBCiv",
-                "employeeName": "Claire Beauchamp",
-                "teamId": "nWW3LtZcCmdBrTfMh",
-                "result": "As expected",
-                "message": "Project is going ok. We are on schedule",
-                "replyEmployeeId": "gaEATkQ8PBuemBCiv",
-                "replyEmployeeName": "Black Jack",
-                "replyMessasge": "Thanks Claire. Ping me if you have any problems.",
-                "replyCreatedAt": "2016-05-15T23:17:45.420Z"
+                "id": "deZXR4fyxdFmcNLTY",
+                "senderId": "gaEATkQ8PBuemBCiv",
+                "senderName": "Claire Beauchamp",
+                "receiverId": "vFZ5mrecWazrJeBW3",
+                "receiverName": "James Fraser",
+                "message": "I'm your sassenach",
+                "createdAt": "2017-01-16T18:10:55.500Z"
             }
         ]
 

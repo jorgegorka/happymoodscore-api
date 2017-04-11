@@ -125,7 +125,7 @@ curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Aut
             "involvement": "0"
         }
 
-## Team [/team/{teamId}]
+## Team [/teams/{teamId}]
 
 ### Display a team [GET]
 Returns information for the selected team.
@@ -373,6 +373,8 @@ Returns all feedback for specified team or employee or all if none specified. It
 
 Only users with admin or manager permissions will get a list of all feedback. Standard users will only get their own.
 
+Feedback with a token Id have not been answered by the employee. You will need that token to create a new feedback and mood status report.
+
 Example:
 
 curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Auth-Token: _p0LOth3HW8A77lpxvRdLAxZK16_t1TZZT3hkOJvdJz" -H "X-User-Id: HpzTxbG42fAqAMRhK" "https://happymoodscore.com/api/v2/feedback?teamId=faEATkQ8PBuemBCee&employeeId=vFZ5mrecWazrJeBW3&startDate=2016-03-01&sendDate=2016-03-31"
@@ -396,6 +398,7 @@ curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Aut
                 "id": "yve9tCC7hB2r4w7Xw",
                 "createdAt": "2016-05-12T08:30:02.047Z",
                 "isNew": false,
+                "token": token,
                 "employeeId": "gaEATkQ8PBuemBCiv",
                 "employeeName": "Claire Beauchamp",
                 "teamId": "nWW3LtZcCmdBrTfMh",
@@ -406,7 +409,46 @@ curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Aut
                 "replyMessasge": "Thanks Claire. Ping me if you have any problems.",
                 "replyCreatedAt": "2016-05-15T23:17:45.420Z"
             }
-        ]        
+        ]   
+        
+### Add a new feedback [POST]
+Add a new mood status and an optional feedback message.
+
+Example:
+
+curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Auth-Token: _p0LOth3HW8A77lpxvRdLAxZK16_t1TZZT3hkOJvdJz" -H "X-User-Id: HpzTxbG42fAqAMRhK" "https://happymoodscore.com/api/v2/teams"  -X POST -d '{"token": "r3j40939jr010rjfqw0fj09jfeijerwfeorf", "status": "good", "message": "I've completed all tasks in time."}'
+
++ Request (application/json)
+    + Headers
+    
+            X-Auth-Token: "_p0LOth3HW8A77lpxvRdLAxZK16_t1TZZT3hkOJvdJz"
+            X-User-Id: "HpzTxbG42fAqAMRhK"
+            
+    + Body
+    
+            
+                token (string) - The name of the new team.
+                status (string) - Mood status. Allowed values are: good, fine, bad
+                message(text) - Feedback message
+            }
+
++ Response 200 (application/json)
+
+        {
+                "id": "yve9tCC7hB2r4w7Xw",
+                "createdAt": "2016-05-12T08:30:02.047Z",
+                "isNew": false,
+                "token": token,
+                "employeeId": "gaEATkQ8PBuemBCiv",
+                "employeeName": "Claire Beauchamp",
+                "teamId": "nWW3LtZcCmdBrTfMh",
+                "result": "As expected",
+                "message": "Project is going ok. We are on schedule",
+                "replyEmployeeId": "",
+                "replyEmployeeName": "",
+                "replyMessasge": "",
+                "replyCreatedAt": "2016-05-15T23:17:45.420Z"
+            }      
         
 ## Dashboard [/dashboard/{?resourceType}/{?resourceId}/{?startDate}/{?endDate}]
 
@@ -481,4 +523,151 @@ curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Aut
               'Error 1 description',
               'Error 2 description'
             ]
+        }
+        
+## 1 on 1 Todos [/todos]
+
+### List all 1 on 1 Todos [GET]
+Returns all 1 on 1 todos.
+
+Example:
+
+curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Auth-Token: _p0LOth3HW8A77lpxvRdLAxZK16_t1TZZT3hkOJvdJz" -H "X-User-Id: HpzTxbG42fAqAMRhK" "https://happymoodscore.com/api/v2/todos"
+
++ Request (application/json)
+    + Headers
+    
+            X-Auth-Token: "_p0LOth3HW8A77lpxvRdLAxZK16_t1TZZT3hkOJvdJz"
+            X-User-Id: "HpzTxbG42fAqAMRhK"
+
++ Response 200 (application/json)
+
+        [
+            {
+                "id": "koEATko8PBuemBCchas",
+                "employeeId": "vFZ5mrecWazrJeBW3",
+                "description": "Content for the description field",
+                "personId": "gaEATkQ8PBuemBCiv",
+                "personName": "Claire Beauchamp",
+                "done": false
+            },
+            {
+                "id": "koEATko8PBuemBCchas",
+                "employeeId": "vFZ5mrecWazrJeBW3",
+                "description": "Reminder to keep 1on1 short and focused.",
+                "personId": "vFZ5mrecWazrJeBW3",
+                "personName": "James Fraser",
+                "done": false
+            }
+        ]
+        
+### Add a todo [POST]
+
+Creates a new 1 on 1 Todo. You can link your todos to a specific employee sending an optional parameter personId.
+
+Example:
+
+curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Auth-Token: _p0LOth3HW8A77lpxvRdLAxZK16_t1TZZT3hkOJvdJz" -H "X-User-Id: HpzTxbG42fAqAMRhK" "https://happymoodscore.com/api/v2/todos" -X POST -d '{"description": "New 1on1 content", personId: "gaEATkQ8PBuemBCiv"}'
+
++ Request (application/json)
+    + Headers
+    
+            X-Auth-Token: "_p0LOth3HW8A77lpxvRdLAxZK16_t1TZZT3hkOJvdJz"
+            X-User-Id: "HpzTxbG42fAqAMRhK"
+            
+    + Body
+    
+            {
+                description (string) - Content of the description field.
+                personId (string, optional) - Id of the employee.
+            }
+
++ Response 200 (application/json)
+
+        {
+            "id": "koEATko8PBuemBCchas",
+            "employeeId": "vFZ5mrecWazrJeBW3",
+            "description": "New 1on1 content",
+            "personId": "gaEATkQ8PBuemBCiv",
+            "personName": "Claire Beauchamp",
+            "done": true
+        }
+        
+## 1 on 1 Todo [/todos/{todoId}]
+
+### Display a todo [GET]
+Returns information for the selected 1 on 1 todo.
+
+Example:
+
+curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Auth-Token: _p0LOth3HW8A77lpxvRdLAxZK16_t1TZZT3hkOJvdJz" -H "X-User-Id: HpzTxbG42fAqAMRhK" "https://happymoodscore.com/api/v2/todos/koEATko8PBuemBCchas"
+
++ Parameters
+    + todoId (string) - Id of the todo.
+
++ Request (application/json)
+    + Headers
+    
+            X-Auth-Token: "_p0LOth3HW8A77lpxvRdLAxZK16_t1TZZT3hkOJvdJz"
+            X-User-Id: "HpzTxbG42fAqAMRhK"
+
++ Response 200 (application/json)
+
+        {
+            "id": "koEATko8PBuemBCchas",
+            "employeeId": "vFZ5mrecWazrJeBW3",
+            "description": "Content for the description field",
+            "personId": "gaEATkQ8PBuemBCiv",
+            "personName": "Claire Beauchamp",
+            "done": false
+        } 
+
+### Edit a todo [POST]
+
+Updates the field done with true or false.
+
+Example:
+
+curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Auth-Token: _p0LOth3HW8A77lpxvRdLAxZK16_t1TZZT3hkOJvdJz" -H "X-User-Id: HpzTxbG42fAqAMRhK" "https://happymoodscore.com/api/v2/todos/koEATko8PBuemBCchas" -X POST -d '{"todoDone": "true"}'
+
++ Request (application/json)
+    + Headers
+    
+            X-Auth-Token: "_p0LOth3HW8A77lpxvRdLAxZK16_t1TZZT3hkOJvdJz"
+            X-User-Id: "HpzTxbG42fAqAMRhK"
+            
+    + Body
+    
+            {
+                todoDone (string) - Accepts true/1 or false/0.
+            }
+
++ Response 200 (application/json)
+
+        {
+            "id": "koEATko8PBuemBCchas",
+            "employeeId": "vFZ5mrecWazrJeBW3",
+            "description": "Content for the description field",
+            "personId": "gaEATkQ8PBuemBCiv",
+            "personName": "Claire Beauchamp",
+            "done": true
+        }
+
+### Delete a todo [DELETE]
+Deletes the indicated 1 on 1 todo
+
+Example:
+
+curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Auth-Token: _p0LOth3HW8A77lpxvRdLAxZK16_t1TZZT3hkOJvdJz" -H "X-User-Id: HpzTxbG42fAqAMRhK" "https://happymoodscore.com/api/v2/todos/koEATko8PBuemBCchas" -X DELETE
+
++ Request (application/json)
+    + Headers
+    
+            X-Auth-Token: "_p0LOth3HW8A77lpxvRdLAxZK16_t1TZZT3hkOJvdJz"
+            X-User-Id: "HpzTxbG42fAqAMRhK"
+
++ Response 200 (application/json)
+
+        {
+            deleted: 'ok'
         }

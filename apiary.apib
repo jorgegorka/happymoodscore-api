@@ -375,6 +375,10 @@ Only users with admin or manager permissions will get a list of all feedback. St
 
 Feedback with a token Id have not been answered by the employee. You will need that token to create a new feedback and mood status report.
 
+Possible values of frequency are: day, week or month.
+
+Field isNew indicates if feedback has or hasn't been marked as read by the team manager.
+
 Example:
 
 curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Auth-Token: _p0LOth3HW8A77lpxvRdLAxZK16_t1TZZT3hkOJvdJz" -H "X-User-Id: HpzTxbG42fAqAMRhK" "https://happymoodscore.com/api/v2/feedback?teamId=faEATkQ8PBuemBCee&employeeId=vFZ5mrecWazrJeBW3&startDate=2016-03-01&sendDate=2016-03-31"
@@ -443,6 +447,7 @@ curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Aut
                 "employeeName": "Claire Beauchamp",
                 "teamId": "nWW3LtZcCmdBrTfMh",
                 "result": "As expected",
+                "frequency": "Weekly",
                 "message": "Project is going ok. We are on schedule",
                 "replyEmployeeId": "",
                 "replyEmployeeName": "",

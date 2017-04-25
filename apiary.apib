@@ -163,8 +163,9 @@ Returns all employees. For every employee you will get: HMS This number reflects
 It is a number that ranges from -10 to +10, Involvement: % of involvment, Points: Total number of points obtained by the employee,
 hi5: Total number of Hi 5s received.
 
-An authenticated user with admin or manager permissions will get a list of all active users. 
-A standard user will only get its own information.
+An authenticated user with admin or manager permissions will get a list of all active users and their metrics. 
+
+A standard user will only get basic user info and no metrics.
 
 Example:
 
@@ -187,7 +188,7 @@ curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Aut
                 "involvement": "23.98",
                 "points": "2300",
                 "hi5": "23",
-                "stataus": "Active",
+                "status": "Active",
                 "teamId": "faEATkQ8PBuemBCee",
                 "teamName": "Designers"
             }
@@ -224,7 +225,7 @@ curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Aut
             "involvement": "0",
             "points": "0",
             "hi5": "0",
-            "stataus": "Active",
+            "status": "Active",
             "teamId": "faEATkQ8PBuemBCee",
             "teamName": "Designers"
         }
@@ -259,7 +260,7 @@ curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Aut
             "involvement": "23.98",
             "points": "2300",
             "hi5": "23",
-            "stataus": "Active",
+            "status": "Active",
             "teamId": "faEATkQ8PBuemBCee",
             "teamName": "Designers"
         }
@@ -339,7 +340,7 @@ curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Aut
                 "involvement": "23.98",
                 "points": "2300",
                 "hi5": "23",
-                "stataus": "Active",
+                "status": "Active",
                 "teamId": "faEATkQ8PBuemBCee",
                 "teamName": "Designers"
             },
@@ -351,7 +352,7 @@ curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Aut
                 "involvement": "76",
                 "points": "340",
                 "hi5": "9",
-                "stataus": "Active",
+                "status": "Active",
                 "teamId": "faEATkQ8PBuemBCee",
                 "teamName": "Designers"
             }

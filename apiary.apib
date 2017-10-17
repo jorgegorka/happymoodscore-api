@@ -20,6 +20,8 @@ If request is successfull it will return an Auth-Token and a User-Id.
 
 You will need to save these credentials and use them in your requests.
 
+It will also return the employeeId associated with that user. This will help you link the current user with all its information as an employee.
+
 Example: 
 
 curl -H 'Accept: application/json' -H 'Content-type: application/json' "https://happymoodscore.com/api/v2/login" -X POST -d '{"email": "manager@company.com", "password": "123456"}'
@@ -37,8 +39,11 @@ curl -H 'Accept: application/json' -H 'Content-type: application/json' "https://
             "status": "success",
             "data": {
                 "authToken": "_p0LOth3HW8A77lpxvRdLAxZK16_t1TZZT3hkOJvdJz",
-                "userId": "HpzTxbG42fAqAMRhK"
+                "userId": "HpzTxbG42fAqAMRhK",
+                "extra": {
+                    "employeeId": "vGk7DYBCoToCGhphS"
                 }
+            }
         }
         
 ## Revoke authentication token [/logout]
@@ -191,16 +196,19 @@ curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Aut
                 "hi5": "23",
                 "status": "Active",
                 "teamId": "faEATkQ8PBuemBCee",
-                "teamName": "Designers"
+                "teamName": "Designers",
+                "pushKey": "poiuy45678"
             }
         ]
         
 ### Add a new employee [POST]
 Add a new employee to the selected team. The status of the new employee will be active.
 
+Push key is used to send push notifications to mobile applications when some events occured like the employee receives a High 5 or to receive feedback alerts.
+
 Example:
 
-curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Auth-Token: _p0LOth3HW8A77lpxvRdLAxZK16_t1TZZT3hkOJvdJz" -H "X-User-Id: HpzTxbG42fAqAMRhK" "https://happymoodscore.com/api/v2/employees"  -X POST -d '{"name": "Black Jack", "email": "black.jack@company.com", "teamId": "p5vpa4pfTCcthc8xu"}'
+curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Auth-Token: _p0LOth3HW8A77lpxvRdLAxZK16_t1TZZT3hkOJvdJz" -H "X-User-Id: HpzTxbG42fAqAMRhK" "https://happymoodscore.com/api/v2/employees"  -X POST -d '{"name": "Black Jack", "email": "black.jack@company.com", "teamId": "p5vpa4pfTCcthc8xu", "pushKey": "poiuy45678"}'
 
 + Request (application/json)
     + Headers
@@ -214,6 +222,7 @@ curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Aut
                 name (string) - The name of the new employee.
                 email (string) - The email of the new employee. Employee will receive an email to validate the account and add a password.
                 teamId (string) - ID of the team where the new employee will be added.
+                pushKey (string | optional) - A key used to send push mobile notifications.
             }
 
 + Response 200 (application/json)
@@ -229,7 +238,8 @@ curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Aut
             "hi5": "0",
             "status": "Active",
             "teamId": "faEATkQ8PBuemBCee",
-            "teamName": "Designers"
+            "teamName": "Designers",
+            "pushKey": "poiuy45678"
         }
 
 ## Employee [/employees/{employeeId}]
@@ -238,6 +248,8 @@ curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Aut
 Returns information for the selected employee.
 
 Only users with admin or manager permissions can have access to any employee. Standard users will only get their own information.
+
+Push key is used to send push notifications to mobile applications when some events occured like the employee receives a High 5, to receive feedback alerts, etc.
 
 Example:
 
@@ -265,7 +277,8 @@ curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Aut
             "hi5": "23",
             "status": "Active",
             "teamId": "faEATkQ8PBuemBCee",
-            "teamName": "Designers"
+            "teamName": "Designers",
+            "pushKey": "poiuy45678"
         }
         
 ## High 5s [/high5/{?receiverId}/{?senderId}/{?startDate}/{?endDate}] 
@@ -277,7 +290,7 @@ Only users with admin or manager permissions will get a list of all feedback. St
 
 Example:
 
-curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Auth-Token: _p0LOth3HW8A77lpxvRdLAxZK16_t1TZZT3hkOJvdJz" -H "X-User-Id: HpzTxbG42fAqAMRhK" "https://happymoodscore.com/api/v2/high5?senderId=gaEATkQ8PBuemBCiv&recevierId=vFZ5mrecWazrJeBW3&startDate=2016-03-01&sendDate=2016-03-31"
+curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Auth-Token: _p0LOth3HW8A77lpxvRdLAxZK16_t1TZZT3hkOJvdJz" -H "X-User-Id: HpzTxbG42fAqAMRhK" "https://happymoodscore.com/api/v2/high5?senderId=gaEATkQ8PBuemBCiv&recevierId=vFZ5mrecWazrJeBW3&startDate=2016-03-01&endDate=2016-03-31"
 
 + Parameters
     + receiverId (string, optional) - Id of the employee that received the High 5.
@@ -680,3 +693,96 @@ curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Aut
         {
             deleted: 'ok'
         }
+        
+## Prizes [/prizes]
+
+### List all prizes [GET]
+Returns all prizes.
+
+Only users with admin or manager permissions will get a list of prizes. 
+
+Example:
+
+curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Auth-Token: _p0LOth3HW8A77lpxvRdLAxZK16_t1TZZT3hkOJvdJz" -H "X-User-Id: HpzTxbG42fAqAMRhK" "https://happymoodscore.com/api/v2/prizes"
+
++ Request (application/json)
+    + Headers
+    
+            X-Auth-Token: "_p0LOth3HW8A77lpxvRdLAxZK16_t1TZZT3hkOJvdJz"
+            X-User-Id: "HpzTxbG42fAqAMRhK"
+
++ Response 200 (application/json)
+
+        [
+            {
+                "id": "gaEATkQ8PBuemBCiv",
+                "prizeType": "Level",
+                "name": "Level 1",
+                "description": "Earn 50 or more points.",
+                "imagePath": "https://happymoodscore.com/images/badges/level1-prize.png"
+            }
+        ]
+        
+## Rewards [/rewards]
+
+### List all rewards [GET]
+Returns all rewards.
+
+Only users with admin or manager permissions will get a list of rewards. 
+
+Example:
+
+curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Auth-Token: _p0LOth3HW8A77lpxvRdLAxZK16_t1TZZT3hkOJvdJz" -H "X-User-Id: HpzTxbG42fAqAMRhK" "https://happymoodscore.com/api/v2/rewards"
+
++ Request (application/json)
+    + Headers
+    
+            X-Auth-Token: "_p0LOth3HW8A77lpxvRdLAxZK16_t1TZZT3hkOJvdJz"
+            X-User-Id: "HpzTxbG42fAqAMRhK"
+
++ Response 200 (application/json)
+
+        [
+            {
+                "id": "gaEATkQ8PBuemBCiv",
+                "name": "Profile50",
+                "description": "Complete at least 50% of your employee profile data.",
+                "value": 5000,
+                "imagePath": "https://happymoodscore.com/images/badges/level1-prize.png",
+                "activityDescription": "has completed 50% of the employee profile data."
+            }
+        ]   
+        
+## Rules [/rules]
+
+### List all rules [GET]
+Returns all rules.
+
+Only users with admin or manager permissions will get a list of rules. 
+
+Example:
+
+curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Auth-Token: _p0LOth3HW8A77lpxvRdLAxZK16_t1TZZT3hkOJvdJz" -H "X-User-Id: HpzTxbG42fAqAMRhK" "https://happymoodscore.com/api/v2/rules"
+
++ Request (application/json)
+    + Headers
+    
+            X-Auth-Token: "_p0LOth3HW8A77lpxvRdLAxZK16_t1TZZT3hkOJvdJz"
+            X-User-Id: "HpzTxbG42fAqAMRhK"
+
++ Response 200 (application/json)
+
+        [
+            {
+                "id": "gaEATkQ8PBuemBCiv",
+                "prizeId": "reEATkQ8P9u1mBCiv",
+                "conditions": [
+                    {
+                        "operation": "points",
+                        "field": "--",
+                        "expression": "gte",
+                        "value": 99
+                    }
+                ]
+            }
+        ]

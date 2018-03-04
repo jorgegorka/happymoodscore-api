@@ -197,7 +197,7 @@ curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Aut
                 "status": "Active",
                 "teamId": "faEATkQ8PBuemBCee",
                 "teamName": "Designers",
-                "pushKey": "poiuy45678"
+                "pushKey": ["poiuy45678"]
             }
         ]
         
@@ -208,7 +208,7 @@ Push key is used to send push notifications to mobile applications when some eve
 
 Example:
 
-curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Auth-Token: _p0LOth3HW8A77lpxvRdLAxZK16_t1TZZT3hkOJvdJz" -H "X-User-Id: HpzTxbG42fAqAMRhK" "https://happymoodscore.com/api/v2/employees"  -X POST -d '{"name": "Black Jack", "email": "black.jack@company.com", "teamId": "p5vpa4pfTCcthc8xu", "pushKey": "poiuy45678"}'
+curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Auth-Token: _p0LOth3HW8A77lpxvRdLAxZK16_t1TZZT3hkOJvdJz" -H "X-User-Id: HpzTxbG42fAqAMRhK" "https://happymoodscore.com/api/v2/employees"  -X POST -d '{"name": "Black Jack", "email": "black.jack@company.com", "teamId": "p5vpa4pfTCcthc8xu", "pushKey": ["poiuy45678"]}'
 
 + Request (application/json)
     + Headers
@@ -222,7 +222,7 @@ curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Aut
                 name (string) - The name of the new employee.
                 email (string) - The email of the new employee. Employee will receive an email to validate the account and add a password.
                 teamId (string) - ID of the team where the new employee will be added.
-                pushKey (string | optional) - A key used to send push mobile notifications.
+                pushKey (array | optional) - Array of unique Ids needed to send push mobile notifications.
             }
 
 + Response 200 (application/json)
@@ -239,7 +239,7 @@ curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Aut
             "status": "Active",
             "teamId": "faEATkQ8PBuemBCee",
             "teamName": "Designers",
-            "pushKey": "poiuy45678"
+            "pushKey": ["poiuy45678"]
         }
 
 ## Employee [/employees/{employeeId}]
@@ -249,7 +249,7 @@ Returns information for the selected employee.
 
 Only users with admin or manager permissions can have access to any employee. Standard users will only get their own information.
 
-Push key is used to send push notifications to mobile applications when some events occured like the employee receives a High 5, to receive feedback alerts, etc.
+Push key is used to send push notifications to mobile applications when some events occured like the employee receives a High 5, to receive feedback alerts, etc. It's an array of ids. One for each device where the user has installed the app.
 
 Example:
 
@@ -278,7 +278,7 @@ curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Aut
             "status": "Active",
             "teamId": "faEATkQ8PBuemBCee",
             "teamName": "Designers",
-            "pushKey": "poiuy45678"
+            "pushKey": ["poiuy45678"]
         }
         
 ## High 5s [/high5/{?receiverId}/{?senderId}/{?startDate}/{?endDate}] 

@@ -256,14 +256,14 @@ Example:
 curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Auth-Token: _p0LOth3HW8A77lpxvRdLAxZK16_t1TZZT3hkOJvdJz" -H "X-User-Id: HpzTxbG42fAqAMRhK" "https://happymoodscore.com/api/v2/employees/gaEATkQ8PBuemBCiv"
 
 + Parameters
-    + employeeId (string) - Id of the team.
+    + employeeId (string) - Id of the employee.
 
 + Request (application/json)
     + Headers
     
             X-Auth-Token: "_p0LOth3HW8A77lpxvRdLAxZK16_t1TZZT3hkOJvdJz"
             X-User-Id: "HpzTxbG42fAqAMRhK"
-
+    
 + Response 200 (application/json)
 
         {
@@ -280,6 +280,50 @@ curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Aut
             "teamName": "Designers",
             "pushKey": ["poiuy45678"]
         }
+        
+### Edit an employee [POST]
+Update information for the selected employee.
+
+Only users with admin or manager permissions can have access to any employee. Standard users will only be able to edit their own information.
+
+Example:
+
+curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Auth-Token: _p0LOth3HW8A77lpxvRdLAxZK16_t1TZZT3hkOJvdJz" -H "X-User-Id: HpzTxbG42fAqAMRhK" "https://happymoodscore.com/api/v2/employees/gaEATkQ8PBuemBCiv" -X POST -d '{"name": "Black Jack", "email": "black.jack@company.com", "teamId": "p5vpa4pfTCcthc8xu", "pushKey": ["poiuy45678"]}'
+
++ Parameters
+    + employeeId (string) - Id of the employee.
+
++ Request (application/json)
+    + Headers
+    
+            X-Auth-Token: "_p0LOth3HW8A77lpxvRdLAxZK16_t1TZZT3hkOJvdJz"
+            X-User-Id: "HpzTxbG42fAqAMRhK"
+            
+    + Body
+    
+            {
+                name (string) - The name of the new employee.
+                email (string) - The email of the new employee. Employee will receive an email to validate the account and add a password.
+                teamId (string) - ID of the team where the new employee will be added.
+                pushKey (array | optional) - Array of unique Ids needed to send push mobile notifications.
+            }
+
++ Response 200 (application/json)
+
+        {
+            "id": "gaEATkQ8PBuemBCiv",
+            "name": "Jack Black",
+            "email": "black.jack@company.com",
+            "avatar": "https://happymoodscore.com/cfs/files/images/w7f2GaYM3Lhoedwbx/avatar.png",
+            "hms": "5",
+            "involvement": "23.98",
+            "points": "2300",
+            "hi5": "23",
+            "status": "Active",
+            "teamId": "p5vpa4pfTCcthc8xu",
+            "teamName": "Designers",
+            "pushKey": ["poiuy45678"]
+        }        
         
 ## High 5s [/high5/{?receiverId}/{?senderId}/{?startDate}/{?endDate}] 
 

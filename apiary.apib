@@ -1,13 +1,13 @@
 FORMAT: 1A
-HOST: https://happymoodscore.com/api/v2/
+HOST: https://happymoodscore.com/api/v3/
 
 # Happy Mood Score
 
-This document references Happy Mood Score version 2 of the API.
+This document references Happy Mood Score version 3 of the API.
 
 Happy Mood Score is an employee feedback and engagement tool. To know more visit https://www.happymoodscore.com
 
-If you are looking for the deprecated v1 documentation you can find it here: http://docs.happymoodscorev1.apiary.io/
+If you are looking for the deprecated v2 documentation you can find it here: http://docs.happymoodscorev2.apiary.io/ 
 
 
 ## Authentication [/login]
@@ -545,7 +545,7 @@ curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Aut
 
 + Response 200 (application/json)
 
-        {
+            {
                 "id": "yve9tCC7hB2r4w7Xw",
                 "createdAt": "2016-05-12T08:30:02.047Z",
                 "isNew": false,
@@ -561,7 +561,44 @@ curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Aut
                 "replyMessasge": "",
                 "replyCreatedAt": "2016-05-15T23:17:45.420Z"
             }      
-        
+
+## Feedback - Next vote request [/feedback/{employeeId}/nextVote]
+
+### Display a todo [GET]
+Returns information for the next vote request for an employee.
+
+Example:
+
+curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Auth-Token: _p0LOth3HW8A77lpxvRdLAxZK16_t1TZZT3hkOJvdJz" -H "X-User-Id: HpzTxbG42fAqAMRhK" "https://happymoodscore.com/api/v2/nextVote/koEATko8PBuemBCchas"
+
++ Parameters
+    + employeeId (string) - Id of the employee.
+
++ Request (application/json)
+    + Headers
+    
+            X-Auth-Token: "_p0LOth3HW8A77lpxvRdLAxZK16_t1TZZT3hkOJvdJz"
+            X-User-Id: "HpzTxbG42fAqAMRhK"
+
++ Response 200 (application/json)
+
+        {
+            "id": "yve9tCC7hB2r4w7Xw",
+            "createdAt": "2016-05-12T08:30:02.047Z",
+            "isNew": false,
+            "token": "ho5h4u32ih5432ohdn2o432df4n32d84023",
+            "employeeId": "gaEATkQ8PBuemBCiv",
+            "employeeName": "Claire Beauchamp",
+            "teamId": "nWW3LtZcCmdBrTfMh",
+            "result": "",
+            "frequency": "Weekly",
+            "message": "",
+            "replyEmployeeId": "",
+            "replyEmployeeName": "",
+            "replyMessasge": "",
+            "replyCreatedAt": ""
+        } 
+   
 ## Dashboard [/dashboard/{?resourceType}/{?resourceId}/{?startDate}/{?endDate}]
 
 ### Get detailed metrics [GET]

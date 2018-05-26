@@ -72,6 +72,253 @@ curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Aut
             }
         }
 
+## Campaigns [/campaigns]
+
+### List all campaigns [GET]
+With campaigns you can create custom feedback forms. These feedback forms will be publicy visible.
+
+You can use campaigns to get feedback not only from employees but from customers, visitors...
+
+After a company event, to request opinions, or just as a quick survey, there are plenty of uses for campaigns.
+
+You can customise all information that appears on the campaign like the question or the text of the possible answers.
+
+You can group campaigns by category to get statistics of related campaigns.
+
+Only active campaigns can receive votes from visitors. 
+
+  * id: Unique ID assigned to the campaign.
+  * name: Name
+  * publicURL: Public url of the campaign
+  * active: Indicates if campaigns is active. Visitors can only give feedback to active campaigns.
+  * question: Main question visitors will have to answer selection one of the available choices. Like: Did you like our last event?
+  * category: Category.
+  * description: Text explaining details of the campaign.
+  * showComments: Display the comments textarea to visitors.
+  * answers: Array with the title of the possible answers.
+  * answers[positiveAnswer]: Text for the positive answer.
+  * answers[neutralAnswer]: Text for the neutral answer.
+  * answers[negativeAnswer]: Text for the negative answer.
+  * totalComments: Number of comments received.
+  * resultsPositive: Number of votes that choose the positive option.
+  * resultsNeutral: Number of votes that choose the neutral option.
+  * resultsNegative: Number of votes that choose the negative option.
+
+
+Example:
+
+curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Auth-Token: _p0LOth3HW8A77lpxvRdLAxZK16_t1TZZT3hkOJvdJz" -H "X-User-Id: HpzTxbG42fAqAMRhK" "https://happymoodscore.com/api/v3/campaigns"
+
++ Request (application/json)
+    + Headers
+    
+            X-Auth-Token: "_p0LOth3HW8A77lpxvRdLAxZK16_t1TZZT3hkOJvdJz"
+            X-User-Id: "HpzTxbG42fAqAMRhK"
+
++ Response 200 (application/json)
+
+        [
+            {
+                "id": "gaEATkQ8PBuemBCiv",
+                "name": "2018-awards",
+                "publicURL": "https://www.happymoodscreo.com/c/company-name/2018-awards",
+                "active": true,
+                "question": "Did you enjoy the company awards event?",
+                "category": "internal",
+                "description": "Please tell us how was the event..."
+                "showComments": true,
+                "answers": [
+                    "positiveAnswer": "It was fantastic!",
+                    "neutralAnswer": "It was ok",
+                    "negativeAnswer": "It needs to improve",
+                ],
+                "totalComments": 14,
+                "resultsPositive": 213,
+                "resultsNeutral": 98,
+                "resultsNegative": 27
+            }
+        ]
+
+### Add a new campaign [POST]
+Add a new campaign.
+
+  * id: Unique ID assigned to the campaign.
+  * name: Name
+  * publicURL: Public url of the campaign
+  * active: Indicates if campaigns is active. Visitors can only give feedback to active campaigns.
+  * question: Main question visitors will have to answer selection one of the available choices. Like: Did you like our last event?
+  * category: Category.
+  * description: Text explaining details of the campaign.
+  * showComments: Display the comments textarea to visitors.
+  * answers: Array with the title of the possible answers.
+  * answers[positiveAnswer]: Text for the positive answer.
+  * answers[neutralAnswer]: Text for the neutral answer.
+  * answers[negativeAnswer]: Text for the negative answer.
+  * totalComments: Number of comments received.
+  * resultsPositive: Number of votes that choose the positive option.
+  * resultsNeutral: Number of votes that choose the neutral option.
+  * resultsNegative: Number of votes that choose the negative option.
+
+Example:
+
+curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Auth-Token: _p0LOth3HW8A77lpxvRdLAxZK16_t1TZZT3hkOJvdJz" -H "X-User-Id: HpzTxbG42fAqAMRhK" "https://happymoodscore.com/api/v3/campaigns"  -X POST -d '{"name": "Updated name", "question": "Is our website helpful", "positiveAnswer": "It's perfect", "neutralAnswer": "It's ok", "negativeAnswer": "It needs to be updated"}'
+
++ Request (application/json)
+    + Headers
+    
+            X-Auth-Token: "_p0LOth3HW8A77lpxvRdLAxZK16_t1TZZT3hkOJvdJz"
+            X-User-Id: "HpzTxbG42fAqAMRhK"
+            
+    + Body
+    
+            {
+                name (string) - The name of the campaign. Public URL will be based on this name.
+                question (string) - Question to ask visitors.   
+                category (string) - Internal category used to group related campaigns together.
+                description (string) -  Explanation of campaign and what visitors need to do.
+                showComments (boolean) - Display a textarea where visitors can send us an optional message.
+                active (boolean) - Is this campaign active? Only active campaigns are visible to visitors.
+                positiveAnswer (string) - Text with the positive answer to the question.
+                neutralAnswer (string) - Text with the neutral answer to the question.
+                negativeAnswer (string) - Text with the negative answer to the question.
+            }
+
++ Response 200 (application/json)
+
+            {
+                "id": "gaEATkQ8PBuemBCiv",
+                "name": "2018-awards",
+                "publicURL": "https://www.happymoodscreo.com/c/company-name/2018-awards",
+                "active": true,
+                "question": "Did you enjoy the company awards event?",
+                "category": "internal",
+                "description": "Please tell us how was the event..."
+                "showComments": true,
+                "answers": [
+                    "positiveAnswer": "It was fantastic!",
+                    "neutralAnswer": "It was ok",
+                    "negativeAnswer": "It needs to improve",
+                ],
+                "totalComments": 14,
+                "resultsPositive": 213,
+                "resultsNeutral": 98,
+                "resultsNegative": 27
+            }
+    
+## Campaign [/campaigns/{campaignId}]    
+
+### Display a campaign [GET]
+Returns information for the selected campaign.
+
+Only users with admin or manager permissions can have access to a campaign.
+
+  * id: Unique ID assigned to the campaign.
+  * name: Name
+  * publicURL: Public url of the campaign
+  * active: Indicates if campaigns is active. Visitors can only give feedback to active campaigns.
+  * question: Main question visitors will have to answer selection one of the available choices. Like: Did you like our last event?
+  * category: Category.
+  * description: Text explaining details of the campaign.
+  * showComments: Display the comments textarea to visitors.
+  * answers: Array with the title of the possible answers.
+  * answers[positiveAnswer]: Text for the positive answer.
+  * answers[neutralAnswer]: Text for the neutral answer.
+  * answers[negativeAnswer]: Text for the negative answer.
+  * totalComments: Number of comments received.
+  * resultsPositive: Number of votes that choose the positive option.
+  * resultsNeutral: Number of votes that choose the neutral option.
+  * resultsNegative: Number of votes that choose the negative option.
+
+
+Example:
+
+curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Auth-Token: _p0LOth3HW8A77lpxvRdLAxZK16_t1TZZT3hkOJvdJz" -H "X-User-Id: HpzTxbG42fAqAMRhK" "https://happymoodscore.com/api/v3/campaigns/gaEATkQ8PBuemBCiv"
+
++ Parameters
+    + campaignId (string) - Id of the campaign.
+
++ Request (application/json)
+    + Headers
+    
+            X-Auth-Token: "_p0LOth3HW8A77lpxvRdLAxZK16_t1TZZT3hkOJvdJz"
+            X-User-Id: "HpzTxbG42fAqAMRhK"
+
++ Response 200 (application/json)
+
+            {
+                "id": "gaEATkQ8PBuemBCiv",
+                "name": "2018-awards",
+                "publicURL": "https://www.happymoodscreo.com/c/company-name/2018-awards",
+                "active": true,
+                "question": "Did you enjoy the company awards event?",
+                "category": "internal",
+                "description": "Please tell us how was the event..."
+                "showComments": true,
+                "answers": [
+                    "positiveAnswer": "It was fantastic!",
+                    "neutralAnswer": "It was ok",
+                    "negativeAnswer": "It needs to improve",
+                ],
+                "totalComments": 14,
+                "resultsPositive": 213,
+                "resultsNeutral": 98,
+                "resultsNegative": 27
+            }
+            
+### Edit a campaign [POST]
+Update information for the selected campaign.
+
+Only users with admin or manager permissions can modify a campaign.
+
+Example:
+
+curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Auth-Token: _p0LOth3HW8A77lpxvRdLAxZK16_t1TZZT3hkOJvdJz" -H "X-User-Id: HpzTxbG42fAqAMRhK" "https://happymoodscore.com/api/v3/campaigns/gaEATkQ8PBuemBCiv" -X POST -d '{"name": "Updated name", "question": "Is our website helpful"}'
+
++ Parameters
+    + campaignId (string) - Id of the campaign.
+
++ Request (application/json)
+    + Headers
+    
+            X-Auth-Token: "_p0LOth3HW8A77lpxvRdLAxZK16_t1TZZT3hkOJvdJz"
+            X-User-Id: "HpzTxbG42fAqAMRhK"
+            
+    + Body
+    
+            {
+                name (string) - The name of the campaign. Public URL will be based on this name.
+                question (string) - Question to ask visitors.   
+                category (string) - Internal category used to group related campaigns together.
+                description (string) -  Explanation of campaign and what visitors need to do.
+                showComments (boolean) - Display a textarea where visitors can send us an optional message.
+                active (boolean) - Is this campaign active? Only active campaigns are visible to visitors.
+                positiveAnswer (string) - Text with the positive answer to the question.
+                neutralAnswer (string) - Text with the neutral answer to the question.
+                negativeAnswer (string) - Text with the negative answer to the question.
+            }
+
++ Response 200 (application/json)    
+
+            {
+                "id": "gaEATkQ8PBuemBCiv",
+                "name": "2018-awards",
+                "publicURL": "https://www.happymoodscreo.com/c/company-name/2018-awards",
+                "active": true,
+                "question": "Did you enjoy the company awards event?",
+                "category": "internal",
+                "description": "Please tell us how was the event..."
+                "showComments": true,
+                "answers": [
+                    "positiveAnswer": "It was fantastic!",
+                    "neutralAnswer": "It was ok",
+                    "negativeAnswer": "It needs to improve",
+                ],
+                "totalComments": 14,
+                "resultsPositive": 213,
+                "resultsNeutral": 98,
+                "resultsNegative": 27
+            }
+        
 ## Teams [/teams]
 
 ### List all teams [GET]
@@ -178,9 +425,24 @@ curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Aut
 ## Employees [/employees]
 
 ### List all employees [GET]
-Returns all employees. For every employee you will get: HMS This number reflects the Happy Mood Score of the employee.
-It is a number that ranges from -10 to +10, Involvement: % of involvment, Points: Total number of points obtained by the employee,
-hi5: Total number of Hi 5s received.
+Returns all employees. For every employee you will get: 
+
+  * id: Unique ID assigned to the employee.
+  * name: Name
+  * email: Email
+  * avatar: Url where the employee avatar is stored.
+  * HMS This number reflects the Happy Mood Score of the employee. It is a number that ranges from -10 to +10.
+  * Involvement: % of global involvement.
+  * Points: Points obtained by the employee,
+  * levelName: Current level achived by the employee.
+  * high5Given: High 5s this employee has send to other coworkers.
+  * high5Received: High 5s this employee has recevied from other coworkers.
+  * numberComments: Feedback that include a comment. 
+  * totalVotes: Total number of times this employee has send feedback (with or without comment).
+  * status: Employee is active or archived.
+  * teamId: Id of the team that this employee belongs to.
+  * teamName: Name of the team that this employee belongs to.
+  * pushKey: Key needed to send push notifications if employee has mobile notifications enabled.
 
 An authenticated user with admin or manager permissions will get a list of all active users and their metrics. 
 
@@ -207,7 +469,6 @@ curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Aut
                 "hms": "5",
                 "involvement": "23.98",
                 "points": "2300",
-                "hi5": "23",
                 "levelName": "Level 5",
                 "worseThanExpected": "1",
                 "betterThanExpected": "2",

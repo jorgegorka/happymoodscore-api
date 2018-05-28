@@ -318,6 +318,43 @@ curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Aut
                 "resultsNeutral": 98,
                 "resultsNegative": 27
             }
+
+## Company [/company]
+
+### Information about your company [GET]
+Returns information about your company
+
+Only users with admin or manager permissions can request this information. 
+
+  * id: Unique ID assigned to the company.
+  * name: Name of the company
+  * slug: URL slug
+  * hms: Global Happy Mood Score.
+  * involvement: Global involvement.
+  * defaultLanguage: Default language for communications, emails.  Currently only "en" and "es" are supported.
+
+Example:
+
+curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Auth-Token: _p0LOth3HW8A77lpxvRdLAxZK16_t1TZZT3hkOJvdJz" -H "X-User-Id: HpzTxbG42fAqAMRhK" "https://happymoodscore.com/api/v3/company"
+
++ Request (application/json)
+    + Headers
+    
+            X-Auth-Token: "_p0LOth3HW8A77lpxvRdLAxZK16_t1TZZT3hkOJvdJz"
+            X-User-Id: "HpzTxbG42fAqAMRhK"
+
++ Response 200 (application/json)
+
+        [
+            {
+                "id": "gaEATkQ8PBuemBCiv",
+                "name": "Highlands Company",
+                "slug": "highlands-company",
+                "hms": 8,
+                "involvement": 87.5,
+                "defaultLanguage": "en"
+            }
+        ]
         
 ## Teams [/teams]
 
@@ -823,10 +860,11 @@ curl -H 'Accept: application/json' -H 'Content-type: application/json' -H "X-Aut
                 "replyCreatedAt": "2016-05-15T23:17:45.420Z"
             }      
 
-## Feedback - Next vote request [/feedback/{employeeId}/nextVote]
+## Feedback - Last unanswered vote request [/feedback/{employeeId}/nextVote]
 
-### Display a todo [GET]
-Returns information for the next vote request for an employee.
+### Display the last feedback request unanswered [GET]
+
+It returns information about the latest unanswered feedback request.
 
 Example:
 
